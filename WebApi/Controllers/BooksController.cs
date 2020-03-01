@@ -62,7 +62,7 @@ namespace WebApi.Controllers
 
             var newBook = new Book
             {
-                Id = Guid.NewGuid(),
+                Id = putRequest.Id,
                 Title = putRequest.Title,
                 Author = putRequest.Author
             };

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using ConsoleApp.Tests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +28,9 @@ namespace ConsoleApp
         {
             // Services
             services.AddSingleton<Startup>();
+
+            // Http Clients
+            services.AddHttpClient<TestHttpClient1>();
         }
     }
 }
