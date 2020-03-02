@@ -31,6 +31,7 @@ namespace ConsoleApp
 
             // Http Clients
             services.AddHttpClient<TestHttpClient1>();
+            services.AddHttpClient<TestHttpClient2>();
         }
     }
 }
