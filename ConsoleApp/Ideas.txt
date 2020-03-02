@@ -1,0 +1,6 @@
+﻿Things to test/do
+
+- HttpResponseMessage implements IDisposable so it should probably be treated as such with usings
+- Initialise or set the BaseUrl for the injected http client
+- Use streams for requests instead of StringContent for message contents
+- Use streams for responses instead of ReadAsStringAsync
