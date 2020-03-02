@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using ConsoleApp.Models;
 using ConsoleApp.Tests;
 
 namespace ConsoleApp
@@ -15,9 +15,23 @@ namespace ConsoleApp
 
         public async Task RunAsync()
         {
-            var postResponse = await _testHttpClient1.PostAsync();
-            
-            await _testHttpClient1.PutAsync(postResponse.Id);
+            await Test1("The Title", "The Author");
+        }
+
+        private async Task Test1(string title, string author)
+        {
+            var postResponse = await _testHttpClient1.PostAsync(new BookPostRequest
+            {
+                Title = title,
+                Author = author
+            });
+
+            await _testHttpClient1.PutAsync(new BookPutRequest
+            {
+                Id = postResponse.Id,
+                Title = $"{title} - updated" ,
+                Author = $"{author} - updated"
+            });
 
             var getResponse = await _testHttpClient1.GetAsync(postResponse.Id);
 
