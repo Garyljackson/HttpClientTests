@@ -8,8 +8,7 @@ using ConsoleApp.Models;
 
 namespace ConsoleApp.Tests
 {
-
-    public class TestHttpClient1
+    public class TestHttpClient1 : ITestHttpClient
     {
         private readonly HttpClient _httpClient;
 
