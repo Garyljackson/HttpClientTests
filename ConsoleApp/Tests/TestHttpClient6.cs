@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -27,7 +26,7 @@ namespace ConsoleApp.Tests
             {
                 using (var responseMessage = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead))
                 {
-                    using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
+                    await using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
                     {
                         return await JsonSerializer.DeserializeAsync<T>(contentStream, DefaultJsonSerializerOptions.Options);
                     }
@@ -52,7 +51,7 @@ namespace ConsoleApp.Tests
 
                         using (var responseMessage = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead))
                         {
-                            using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
+                            await using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
                             {
                                 return await JsonSerializer.DeserializeAsync<T>(contentStream, DefaultJsonSerializerOptions.Options);
                             }
@@ -89,7 +88,7 @@ namespace ConsoleApp.Tests
             {
                 using (var responseMessage = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
                 {
-                    using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
+                    await using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
                     {
                         return await JsonSerializer.DeserializeAsync<T>(contentStream, DefaultJsonSerializerOptions.Options);
                     }
