@@ -27,10 +27,12 @@ namespace ConsoleApp.Tests
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri))
             {
-                using (var responseMessage = await _httpClient.SendAsync(requestMessage))
+                using (var responseMessage = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead))
                 {
-                    var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<IEnumerable<BookResponse>>(responseJson, DefaultJsonSerializerOptions.Options);
+                    using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
+                    {
+                        return await JsonSerializer.DeserializeAsync<IEnumerable<BookResponse>>(contentStream, DefaultJsonSerializerOptions.Options);
+                    }
                 }
             }
         }
@@ -41,10 +43,12 @@ namespace ConsoleApp.Tests
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri))
             {
-                using (var responseMessage = await _httpClient.SendAsync(requestMessage))
+                using (var responseMessage = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead))
                 {
-                    var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<BookResponse>(responseJson, DefaultJsonSerializerOptions.Options);
+                    using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
+                    {
+                        return await JsonSerializer.DeserializeAsync<BookResponse>(contentStream, DefaultJsonSerializerOptions.Options);
+                    }
                 }
             }
         }
@@ -59,10 +63,12 @@ namespace ConsoleApp.Tests
             {
                 requestMessage.Content = new StringContent(bookJson, Encoding.UTF8, "application/json");
 
-                using (var responseMessage = await _httpClient.SendAsync(requestMessage))
+                using (var responseMessage = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead))
                 {
-                    var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<BookResponse>(responseJson, DefaultJsonSerializerOptions.Options);
+                    using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
+                    {
+                        return await JsonSerializer.DeserializeAsync<BookResponse>(contentStream, DefaultJsonSerializerOptions.Options);
+                    }
                 }
             }
         }
@@ -76,7 +82,7 @@ namespace ConsoleApp.Tests
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Put, requestUri))
             {
                 requestMessage.Content = new StringContent(bookJson, Encoding.UTF8, "application/json");
-                await _httpClient.SendAsync(requestMessage);
+                await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
             }
         }
 
@@ -86,10 +92,12 @@ namespace ConsoleApp.Tests
 
             using (var request = new HttpRequestMessage(HttpMethod.Delete, requestUri))
             {
-                using (var responseMessage = await _httpClient.SendAsync(request))
+                using (var responseMessage = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
                 {
-                    var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<BookResponse>(responseJson, DefaultJsonSerializerOptions.Options);
+                    using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
+                    {
+                        return await JsonSerializer.DeserializeAsync<BookResponse>(contentStream, DefaultJsonSerializerOptions.Options);
+                    }
                 }
             }
         }
