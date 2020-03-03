@@ -1,5 +1,5 @@
-﻿Things to test/do
+﻿Things left to do
 
-- Initialise or set the BaseUrl for the injected http client
-- Use streams for requests instead of StringContent for message contents
-- Use streams for responses instead of ReadAsStringAsync
+- Make more generic
+- Refactor to something nicer
+- Refactor out base class
