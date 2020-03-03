@@ -74,9 +74,9 @@ namespace ConsoleApp.Tests
         {
             var requestUri = new Uri($"https://localhost:44342/api/books/{id}");
 
-            using (var request = new HttpRequestMessage(HttpMethod.Delete, requestUri))
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestUri))
             {
-                var responseMessage = await _httpClient.DeleteAsync(requestUri);
+                var responseMessage = await _httpClient.SendAsync(requestMessage);
                 var responseJson = await responseMessage.Content.ReadAsStringAsync();
                 return JsonSerializer.Deserialize<BookResponse>(responseJson, DefaultJsonSerializerOptions.Options);
             }

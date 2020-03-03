@@ -39,6 +39,8 @@ namespace ConsoleApp
             var getResponse = await _testHttpClient1.GetAsync(postResponse.Id);
 
             var getListResponse = await _testHttpClient1.GetListAsync();
+
+            var deleteResponse = await _testHttpClient1.DeleteAsync(postResponse.Id);
         }
 
         private async Task Test2(string title, string author)
@@ -59,6 +61,8 @@ namespace ConsoleApp
             var getResponse = await _testHttpClient2.GetAsync(postResponse.Id);
 
             var getListResponse = await _testHttpClient2.GetListAsync();
+
+            var deleteResponse = await _testHttpClient1.DeleteAsync(postResponse.Id);
         }
     }
 }
