@@ -5,6 +5,10 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+ // Dammit, a bug in the serialization prevents me from making the request body simply object
+ // The bug is here https://github.com/dotnet/runtime/issues/31464
+ // Once the bug is fixed I won't need the TRequest generic type params
+
 namespace ConsoleApp.Tests
 {
     public class TestHttpClient6 
@@ -34,7 +38,7 @@ namespace ConsoleApp.Tests
             }
         }
         
-        public async Task<T> PostAsync<T>(Uri requestUri, object requestBody)
+        public async Task<TResponse> PostAsync<TRequest, TResponse>(Uri requestUri, TRequest requestBody)
         {
             using (var requestStream = new MemoryStream())
             {
@@ -53,7 +57,7 @@ namespace ConsoleApp.Tests
                         {
                             await using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
                             {
-                                return await JsonSerializer.DeserializeAsync<T>(contentStream, DefaultJsonSerializerOptions.Options);
+                                return await JsonSerializer.DeserializeAsync<TResponse>(contentStream, DefaultJsonSerializerOptions.Options);
                             }
                         }
                     }
@@ -61,7 +65,7 @@ namespace ConsoleApp.Tests
             }
         }
 
-        public async Task PutAsync(Uri requestUri, object requestBody)
+        public async Task PutAsync<TRequest>(Uri requestUri, TRequest requestBody)
         {
             using (var requestStream = new MemoryStream())
             {
@@ -72,7 +76,7 @@ namespace ConsoleApp.Tests
                 {
                     streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                    using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri))
+                    using (var requestMessage = new HttpRequestMessage(HttpMethod.Put, requestUri))
                     {
                         requestMessage.Content = streamContent;
 
