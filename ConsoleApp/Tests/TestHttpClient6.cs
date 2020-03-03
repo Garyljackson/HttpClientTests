@@ -21,7 +21,7 @@ namespace ConsoleApp.Tests
             _httpClient.BaseAddress = new Uri("https://localhost:44342/"); 
         }
 
-        public async Task<TResponse> GetAsync<TResponse>(Uri requestUri)
+        public async Task<T> GetAsync<T>(Uri requestUri)
         {
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri))
             {
@@ -29,17 +29,17 @@ namespace ConsoleApp.Tests
                 {
                     using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
                     {
-                        return await JsonSerializer.DeserializeAsync<TResponse>(contentStream, DefaultJsonSerializerOptions.Options);
+                        return await JsonSerializer.DeserializeAsync<T>(contentStream, DefaultJsonSerializerOptions.Options);
                     }
                 }
             }
         }
         
-        public async Task<TResponse> PostAsync<TRequest, TResponse>(Uri requestUri, TRequest request)
+        public async Task<T> PostAsync<T>(Uri requestUri, object requestBody)
         {
             using (var requestStream = new MemoryStream())
             {
-                await JsonSerializer.SerializeAsync(requestStream, request, DefaultJsonSerializerOptions.Options);
+                await JsonSerializer.SerializeAsync(requestStream, requestBody, DefaultJsonSerializerOptions.Options);
                 requestStream.Seek(0, SeekOrigin.Begin);
 
                 using (var streamContent = new StreamContent(requestStream))
@@ -54,7 +54,7 @@ namespace ConsoleApp.Tests
                         {
                             using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
                             {
-                                return await JsonSerializer.DeserializeAsync<TResponse>(contentStream, DefaultJsonSerializerOptions.Options);
+                                return await JsonSerializer.DeserializeAsync<T>(contentStream, DefaultJsonSerializerOptions.Options);
                             }
                         }
                     }
@@ -62,11 +62,11 @@ namespace ConsoleApp.Tests
             }
         }
 
-        public async Task PutAsync<TRequest>(Uri requestUri, TRequest request)
+        public async Task PutAsync(Uri requestUri, object requestBody)
         {
             using (var requestStream = new MemoryStream())
             {
-                await JsonSerializer.SerializeAsync(requestStream, request, DefaultJsonSerializerOptions.Options);
+                await JsonSerializer.SerializeAsync(requestStream, requestBody, DefaultJsonSerializerOptions.Options);
                 requestStream.Seek(0, SeekOrigin.Begin);
 
                 using (var streamContent = new StreamContent(requestStream))
@@ -83,7 +83,7 @@ namespace ConsoleApp.Tests
             }
         }
 
-        public async Task<TResponse> DeleteAsync<TResponse>(Uri requestUri)
+        public async Task<T> DeleteAsync<T>(Uri requestUri)
         {
             using (var request = new HttpRequestMessage(HttpMethod.Delete, requestUri))
             {
@@ -91,7 +91,7 @@ namespace ConsoleApp.Tests
                 {
                     using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
                     {
-                        return await JsonSerializer.DeserializeAsync<TResponse>(contentStream, DefaultJsonSerializerOptions.Options);
+                        return await JsonSerializer.DeserializeAsync<T>(contentStream, DefaultJsonSerializerOptions.Options);
                     }
                 }
             }
