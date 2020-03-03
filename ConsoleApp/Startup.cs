@@ -8,17 +8,20 @@ namespace ConsoleApp
     {
         private readonly TestHttpClient1 _testHttpClient1;
         private readonly TestHttpClient2 _testHttpClient2;
+        private readonly TestHttpClient3 _testHttpClient3;
 
-        public Startup(TestHttpClient1 testHttpClient1, TestHttpClient2 testHttpClient2)
+        public Startup(TestHttpClient1 testHttpClient1, TestHttpClient2 testHttpClient2, TestHttpClient3 testHttpClient3)
         {
             _testHttpClient1 = testHttpClient1;
             _testHttpClient2 = testHttpClient2;
+            _testHttpClient3 = testHttpClient3;
         }
 
         public async Task RunAsync()
         {
             await Test1("The Title", "The Author");
             await Test2("The Title", "The Author");
+            await Test3("The Title", "The Author");
         }
 
         private async Task Test1(string title, string author)
@@ -62,7 +65,29 @@ namespace ConsoleApp
 
             var getListResponse = await _testHttpClient2.GetListAsync();
 
-            var deleteResponse = await _testHttpClient1.DeleteAsync(postResponse.Id);
+            var deleteResponse = await _testHttpClient2.DeleteAsync(postResponse.Id);
+        }
+
+        private async Task Test3(string title, string author)
+        {
+            var postResponse = await _testHttpClient3.PostAsync(new BookPostRequest
+            {
+                Title = title,
+                Author = author
+            });
+
+            await _testHttpClient3.PutAsync(new BookPutRequest
+            {
+                Id = postResponse.Id,
+                Title = $"{title} - updated",
+                Author = $"{author} - updated"
+            });
+
+            var getResponse = await _testHttpClient3.GetAsync(postResponse.Id);
+
+            var getListResponse = await _testHttpClient3.GetListAsync();
+
+            var deleteResponse = await _testHttpClient3.DeleteAsync(postResponse.Id);
         }
     }
 }
