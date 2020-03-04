@@ -36,6 +36,7 @@ namespace ConsoleApp
             services.AddHttpClient<TestHttpClient4>();
             services.AddHttpClient<TestHttpClient5>();
             services.AddHttpClient<TestHttpClient6>();
+            services.AddHttpClient<TestHttpClient7>();
         }
     }
 }
