@@ -67,7 +67,7 @@ using System.Threading.Tasks;
             return await JsonSerializer.DeserializeAsync<T>(contentStream, DefaultJsonSerializerOptions.Options);
         }
 
-        private static StreamContent CreateStreamContent(Stream stream)
+        private static HttpContent CreateStreamContent(Stream stream)
         {
             var streamContent = new StreamContent(stream);
             streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
