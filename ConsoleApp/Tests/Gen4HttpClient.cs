@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ConsoleApp.Models;
 
 namespace ConsoleApp.Tests
 {
-    public class TestHttpClient5 : ITestHttpClient
+    public class Gen4HttpClient : ITestHttpClient
     {
         private readonly HttpClient _httpClient;
 
-        public TestHttpClient5(HttpClient httpClient)
+        public Gen4HttpClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
 
@@ -58,26 +57,17 @@ namespace ConsoleApp.Tests
         {
             var requestUri = new Uri("/api/books", UriKind.Relative);
 
-            using (var requestStream = new MemoryStream())
+            var bookJson = JsonSerializer.Serialize(request);
+
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri))
             {
-                await JsonSerializer.SerializeAsync(requestStream, request, DefaultJsonSerializerOptions.Options);
-                requestStream.Seek(0, SeekOrigin.Begin);
+                requestMessage.Content = new StringContent(bookJson, Encoding.UTF8, "application/json");
 
-                using (var streamContent = new StreamContent(requestStream))
+                using (var responseMessage = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead))
                 {
-                    streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                    using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri))
+                    using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
                     {
-                        requestMessage.Content = streamContent;
-
-                        using (var responseMessage = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead))
-                        {
-                            using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
-                            {
-                                return await JsonSerializer.DeserializeAsync<BookResponse>(contentStream, DefaultJsonSerializerOptions.Options);
-                            }
-                        }
+                        return await JsonSerializer.DeserializeAsync<BookResponse>(contentStream, DefaultJsonSerializerOptions.Options);
                     }
                 }
             }
@@ -87,22 +77,12 @@ namespace ConsoleApp.Tests
         {
             var requestUri = new Uri($"/api/books/{request.Id}", UriKind.Relative);
 
-            using (var requestStream = new MemoryStream())
+            var bookJson = JsonSerializer.Serialize(request);
+
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Put, requestUri))
             {
-                await JsonSerializer.SerializeAsync(requestStream, request, DefaultJsonSerializerOptions.Options);
-                requestStream.Seek(0, SeekOrigin.Begin);
-
-                using (var streamContent = new StreamContent(requestStream))
-                {
-                    streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                    using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri))
-                    {
-                        requestMessage.Content = streamContent;
-
-                        await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
-                    }
-                }
+                requestMessage.Content = new StringContent(bookJson, Encoding.UTF8, "application/json");
+                await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead);
             }
         }
 

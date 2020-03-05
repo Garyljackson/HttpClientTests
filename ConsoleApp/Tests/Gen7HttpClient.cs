@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
  namespace ConsoleApp.Tests
 {
-    public class TestHttpClient7 
+    public class Gen7HttpClient 
     {
         private readonly HttpClient _httpClient;
 
-        public TestHttpClient7(HttpClient httpClient)
+        public Gen7HttpClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:44342/"); 

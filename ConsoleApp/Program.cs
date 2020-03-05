@@ -30,13 +30,13 @@ namespace ConsoleApp
             services.AddSingleton<Startup>();
 
             // Http Clients
-            services.AddHttpClient<TestHttpClient1>();
-            services.AddHttpClient<TestHttpClient2>();
-            services.AddHttpClient<TestHttpClient3>();
-            services.AddHttpClient<TestHttpClient4>();
-            services.AddHttpClient<TestHttpClient5>();
-            services.AddHttpClient<TestHttpClient6>();
-            services.AddHttpClient<TestHttpClient7>();
+            services.AddHttpClient<Gen1HttpClient>();
+            services.AddHttpClient<Gen2HttpClient>();
+            services.AddHttpClient<Gen3HttpClient>();
+            services.AddHttpClient<Gen4HttpClient>();
+            services.AddHttpClient<Gen5HttpClient>();
+            services.AddHttpClient<Gen6HttpClient>();
+            services.AddHttpClient<Gen7HttpClient>();
         }
     }
 }

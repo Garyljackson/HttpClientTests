@@ -8,11 +8,11 @@ using ConsoleApp.Models;
 
 namespace ConsoleApp.Tests
 {
-    public class TestHttpClient3 : ITestHttpClient
+    public class Gen2HttpClient : ITestHttpClient
     {
         private readonly HttpClient _httpClient;
 
-        public TestHttpClient3(HttpClient httpClient)
+        public Gen2HttpClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -23,11 +23,9 @@ namespace ConsoleApp.Tests
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri))
             {
-                using (var responseMessage = await _httpClient.SendAsync(requestMessage))
-                {
-                    var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<IEnumerable<BookResponse>>(responseJson, DefaultJsonSerializerOptions.Options);
-                }
+                var responseMessage = await _httpClient.SendAsync(requestMessage);
+                var responseJson = await responseMessage.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<IEnumerable<BookResponse>>(responseJson, DefaultJsonSerializerOptions.Options);
             }
         }
 
@@ -37,11 +35,9 @@ namespace ConsoleApp.Tests
 
             using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri))
             {
-                using (var responseMessage = await _httpClient.SendAsync(requestMessage))
-                {
-                    var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<BookResponse>(responseJson, DefaultJsonSerializerOptions.Options);
-                }
+                var responseMessage = await _httpClient.SendAsync(requestMessage);
+                var responseJson = await responseMessage.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<BookResponse>(responseJson, DefaultJsonSerializerOptions.Options);
             }
         }
 
@@ -55,11 +51,9 @@ namespace ConsoleApp.Tests
             {
                 requestMessage.Content = new StringContent(bookJson, Encoding.UTF8, "application/json");
 
-                using (var responseMessage = await _httpClient.SendAsync(requestMessage))
-                {
-                    var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<BookResponse>(responseJson, DefaultJsonSerializerOptions.Options);
-                }
+                var responseMessage = await _httpClient.SendAsync(requestMessage);
+                var responseJson = await responseMessage.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<BookResponse>(responseJson, DefaultJsonSerializerOptions.Options);
             }
         }
 
@@ -80,13 +74,11 @@ namespace ConsoleApp.Tests
         {
             var requestUri = new Uri($"https://localhost:44342/api/books/{id}");
 
-            using (var request = new HttpRequestMessage(HttpMethod.Delete, requestUri))
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Delete, requestUri))
             {
-                using (var responseMessage = await _httpClient.SendAsync(request))
-                {
-                    var responseJson = await responseMessage.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<BookResponse>(responseJson, DefaultJsonSerializerOptions.Options);
-                }
+                var responseMessage = await _httpClient.SendAsync(requestMessage);
+                var responseJson = await responseMessage.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<BookResponse>(responseJson, DefaultJsonSerializerOptions.Options);
             }
         }
     }
