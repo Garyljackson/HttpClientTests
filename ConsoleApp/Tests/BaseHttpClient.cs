@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 
         protected BaseHttpClient(HttpClient httpClient, JsonSerializerOptions jsonSerializerOptions)
         {
-            _httpClient = httpClient;
-            _jsonSerializerOptions = jsonSerializerOptions;
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            _jsonSerializerOptions = jsonSerializerOptions ?? throw new ArgumentNullException(nameof(jsonSerializerOptions));
         }
 
         public async Task<T> GetAsync<T>(Uri requestUri)
