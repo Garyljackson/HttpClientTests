@@ -8,36 +8,39 @@ namespace ConsoleApp
 {
     internal class Startup
     {
-        private readonly Gen1HttpClient _gen1HttpClient;
-        private readonly Gen2HttpClient _gen2HttpClient;
-        private readonly Gen3HttpClient _gen3HttpClient;
-        private readonly Gen4HttpClient _gen4HttpClient;
-        private readonly Gen5HttpClient _gen5HttpClient;
-        private readonly Gen6HttpClient _gen6HttpClient;
-        private readonly Gen7HttpClient _gen7HttpClient;
+        private readonly HttpClientGen1 _httpClientGen1;
+        private readonly HttpClientGen2 _httpClientGen2;
+        private readonly HttpClientGen3 _httpClientGen3;
+        private readonly HttpClientGen4 _httpClientGen4;
+        private readonly HttpClientGen5 _httpClientGen5;
+        private readonly HttpClientGen6 _httpClientGen6;
+        private readonly HttpClientGen7 _httpClientGen7;
+        private readonly HttpClientGen8 _httpClientGen8;
 
         public Startup(
-            Gen1HttpClient gen1HttpClient, Gen2HttpClient gen2HttpClient, Gen3HttpClient gen3HttpClient, Gen4HttpClient gen4HttpClient, 
-            Gen5HttpClient gen5HttpClient, Gen6HttpClient gen6HttpClient, Gen7HttpClient gen7HttpClient)
+            HttpClientGen1 httpClientGen1, HttpClientGen2 httpClientGen2, HttpClientGen3 httpClientGen3, HttpClientGen4 httpClientGen4, 
+            HttpClientGen5 httpClientGen5, HttpClientGen6 httpClientGen6, HttpClientGen7 httpClientGen7, HttpClientGen8 httpClientGen8)
         {
-            _gen1HttpClient = gen1HttpClient;
-            _gen2HttpClient = gen2HttpClient;
-            _gen3HttpClient = gen3HttpClient;
-            _gen4HttpClient = gen4HttpClient;
-            _gen5HttpClient = gen5HttpClient;
-            _gen6HttpClient = gen6HttpClient;
-            _gen7HttpClient = gen7HttpClient;
+            _httpClientGen1 = httpClientGen1;
+            _httpClientGen2 = httpClientGen2;
+            _httpClientGen3 = httpClientGen3;
+            _httpClientGen4 = httpClientGen4;
+            _httpClientGen5 = httpClientGen5;
+            _httpClientGen6 = httpClientGen6;
+            _httpClientGen7 = httpClientGen7;
+            _httpClientGen8 = httpClientGen8;
         }
 
         public async Task RunAsync()
         {
-            await TestClient(_gen1HttpClient, "The Title", "The Author");
-            await TestClient(_gen2HttpClient, "The Title", "The Author");
-            await TestClient(_gen3HttpClient, "The Title", "The Author");
-            await TestClient(_gen4HttpClient, "The Title", "The Author");
-            await TestClient(_gen5HttpClient, "The Title", "The Author");
-            await TestClient6(_gen6HttpClient, "The Title", "The Author");
-            await TestClient7(_gen7HttpClient, "The Title", "The Author");
+            await TestClient(_httpClientGen1, "The Title", "The Author");
+            await TestClient(_httpClientGen2, "The Title", "The Author");
+            await TestClient(_httpClientGen3, "The Title", "The Author");
+            await TestClient(_httpClientGen4, "The Title", "The Author");
+            await TestClient(_httpClientGen5, "The Title", "The Author");
+            await TestClient6(_httpClientGen6, "The Title", "The Author");
+            await TestClient7(_httpClientGen7, "The Title", "The Author");
+            await TestClient8(_httpClientGen8, "The Title", "The Author");
         }
 
         private async Task TestClient(ITestHttpClient testHttpClient, string title, string author)
@@ -62,9 +65,9 @@ namespace ConsoleApp
             var deleteResponse = await testHttpClient.DeleteAsync(postResponse.Id);
         }
 
-        private async Task TestClient6(Gen6HttpClient gen6HttpClient, string title, string author)
+        private async Task TestClient6(HttpClientGen6 httpClientGen6, string title, string author)
         {
-            var postResponse = await gen6HttpClient.PostAsync<BookPostRequest, BookResponse>(
+            var postResponse = await httpClientGen6.PostAsync<BookPostRequest, BookResponse>(
                 new Uri("/api/books", UriKind.Relative),
                 new BookPostRequest
                 {
@@ -72,7 +75,7 @@ namespace ConsoleApp
                     Author = author
                 });
 
-            await gen6HttpClient.PutAsync(
+            await httpClientGen6.PutAsync(
                 new Uri($"/api/books/{postResponse.Id}", UriKind.Relative),
                 new BookPutRequest
                 {
@@ -81,16 +84,16 @@ namespace ConsoleApp
                     Author = $"{author} - updated"
                 });
 
-            var getResponse = await gen6HttpClient.GetAsync<BookResponse>(new Uri($"/api/books/{postResponse.Id}", UriKind.Relative));
+            var getResponse = await httpClientGen6.GetAsync<BookResponse>(new Uri($"/api/books/{postResponse.Id}", UriKind.Relative));
 
-            var getListResponse = await gen6HttpClient.GetAsync<IEnumerable<BookResponse>>(new Uri("/api/books", UriKind.Relative));
+            var getListResponse = await httpClientGen6.GetAsync<IEnumerable<BookResponse>>(new Uri("/api/books", UriKind.Relative));
 
-            var deleteResponse = await gen6HttpClient.DeleteAsync<BookResponse>(new Uri($"/api/books/{postResponse.Id}", UriKind.Relative));
+            var deleteResponse = await httpClientGen6.DeleteAsync<BookResponse>(new Uri($"/api/books/{postResponse.Id}", UriKind.Relative));
         }
 
-        private async Task TestClient7(Gen7HttpClient gen7HttpClient, string title, string author)
+        private async Task TestClient7(HttpClientGen7 httpClientGen7, string title, string author)
         {
-            var postResponse = await gen7HttpClient.PostAsync<BookPostRequest, BookResponse>(
+            var postResponse = await httpClientGen7.PostAsync<BookPostRequest, BookResponse>(
                 new Uri("/api/books", UriKind.Relative),
                 new BookPostRequest
                 {
@@ -98,7 +101,7 @@ namespace ConsoleApp
                     Author = author
                 });
 
-            await gen7HttpClient.PutAsync(
+            await httpClientGen7.PutAsync(
                 new Uri($"/api/books/{postResponse.Id}", UriKind.Relative),
                 new BookPutRequest
                 {
@@ -107,14 +110,38 @@ namespace ConsoleApp
                     Author = $"{author} - updated"
                 });
 
-            var getResponse = await gen7HttpClient.GetAsync<BookResponse>(new Uri($"/api/books/{postResponse.Id}", UriKind.Relative));
+            var getResponse = await httpClientGen7.GetAsync<BookResponse>(new Uri($"/api/books/{postResponse.Id}", UriKind.Relative));
 
-            var getListResponse = await gen7HttpClient.GetAsync<IEnumerable<BookResponse>>(new Uri("/api/books", UriKind.Relative));
+            var getListResponse = await httpClientGen7.GetAsync<IEnumerable<BookResponse>>(new Uri("/api/books", UriKind.Relative));
 
-            var deleteResponse = await gen7HttpClient.DeleteAsync<BookResponse>(new Uri($"/api/books/{postResponse.Id}", UriKind.Relative));
+            var deleteResponse = await httpClientGen7.DeleteAsync<BookResponse>(new Uri($"/api/books/{postResponse.Id}", UriKind.Relative));
         }
 
+        private async Task TestClient8(HttpClientGen8 httpClientGen8, string title, string author)
+        {
+            var postResponse = await httpClientGen8.PostAsync<BookPostRequest, BookResponse>(
+                new Uri("/api/books", UriKind.Relative),
+                new BookPostRequest
+                {
+                    Title = title,
+                    Author = author
+                });
 
+            await httpClientGen8.PutAsync(
+                new Uri($"/api/books/{postResponse.Id}", UriKind.Relative),
+                new BookPutRequest
+                {
+                    Id = postResponse.Id,
+                    Title = $"{title} - updated",
+                    Author = $"{author} - updated"
+                });
+
+            var getResponse = await httpClientGen8.GetAsync<BookResponse>(new Uri($"/api/books/{postResponse.Id}", UriKind.Relative));
+
+            var getListResponse = await httpClientGen8.GetAsync<IEnumerable<BookResponse>>(new Uri("/api/books", UriKind.Relative));
+
+            var deleteResponse = await httpClientGen8.DeleteAsync<BookResponse>(new Uri($"/api/books/{postResponse.Id}", UriKind.Relative));
+        }
 
     }
 }

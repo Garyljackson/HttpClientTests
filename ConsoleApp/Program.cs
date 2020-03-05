@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using ConsoleApp.Tests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,13 +31,14 @@ namespace ConsoleApp
             services.AddSingleton<Startup>();
 
             // Http Clients
-            services.AddHttpClient<Gen1HttpClient>();
-            services.AddHttpClient<Gen2HttpClient>();
-            services.AddHttpClient<Gen3HttpClient>();
-            services.AddHttpClient<Gen4HttpClient>();
-            services.AddHttpClient<Gen5HttpClient>();
-            services.AddHttpClient<Gen6HttpClient>();
-            services.AddHttpClient<Gen7HttpClient>();
+            services.AddHttpClient<HttpClientGen1>();
+            services.AddHttpClient<HttpClientGen2>();
+            services.AddHttpClient<HttpClientGen3>();
+            services.AddHttpClient<HttpClientGen4>();
+            services.AddHttpClient<HttpClientGen5>();
+            services.AddHttpClient<HttpClientGen6>();
+            services.AddHttpClient<HttpClientGen7>();
+            services.AddHttpClient<HttpClientGen8>(client => client.BaseAddress = new Uri("https://localhost:44342/"));
         }
     }
 }

@@ -8,11 +8,11 @@ using ConsoleApp.Models;
 
 namespace ConsoleApp.Tests
 {
-    public class Gen1HttpClient : ITestHttpClient
+    public class HttpClientGen1 : ITestHttpClient
     {
         private readonly HttpClient _httpClient;
 
-        public Gen1HttpClient(HttpClient httpClient)
+        public HttpClientGen1(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
